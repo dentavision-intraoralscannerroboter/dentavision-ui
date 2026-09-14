@@ -21,7 +21,7 @@ LABEL_STYLE = "color: #768599; font-weight: 600; font-size: 11px;"
 ROTATION_AXES = ["rx", "ry", "rz"]
 
 
-class MotionControlController:
+class MotionController:
     JOYSTICK_DIAMETER = 90
     Z_STEP_MM = 1.0
     ROTATION_STEP_DEG = 5.0

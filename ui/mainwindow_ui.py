@@ -200,15 +200,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.RY, 0, 1, 1, 1)
 
-        self.RX = QLabel(self.toothTargetFrame)
-        self.RX.setObjectName(u"RX")
-        self.RX.setStyleSheet(u"color: #768599;\n"
-"font-weight: 450;\n"
-"font-family: \"Helvetica\";")
-        self.RX.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.gridLayout_3.addWidget(self.RX, 0, 0, 1, 1)
-
         self.RZ = QLabel(self.toothTargetFrame)
         self.RZ.setObjectName(u"RZ")
         self.RZ.setStyleSheet(u"color: #768599;\n"
@@ -238,6 +229,15 @@ class Ui_MainWindow(object):
         self.labelZ_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.gridLayout_3.addWidget(self.labelZ_2, 1, 2, 1, 1)
+
+        self.RX = QLabel(self.toothTargetFrame)
+        self.RX.setObjectName(u"RX")
+        self.RX.setStyleSheet(u"color: #768599;\n"
+"font-weight: 450;\n"
+"font-family: \"Helvetica\";")
+        self.RX.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_3.addWidget(self.RX, 0, 0, 1, 1)
 
 
         self.verticalLayout.addLayout(self.gridLayout_3)
@@ -269,7 +269,7 @@ class Ui_MainWindow(object):
 "font-family: \"Helvetica\";")
         self.mandibula = QLabel(self.centerPanel)
         self.mandibula.setObjectName(u"mandibula")
-        self.mandibula.setGeometry(QRect(160, 460, 161, 16))
+        self.mandibula.setGeometry(QRect(160, 460, 171, 16))
         self.mandibula.setStyleSheet(u"color: #768599;\n"
 "font-weight: 450;\n"
 "font-family: \"Helvetica\";")
@@ -368,12 +368,12 @@ class Ui_MainWindow(object):
         self.labelX.setText(QCoreApplication.translate("MainWindow", u"-", None))
         self.labelY.setText(QCoreApplication.translate("MainWindow", u"-", None))
         self.labelZ.setText(QCoreApplication.translate("MainWindow", u"-", None))
-        self.RY.setText(QCoreApplication.translate("MainWindow", u"RY", None))
-        self.RX.setText(QCoreApplication.translate("MainWindow", u"RX", None))
-        self.RZ.setText(QCoreApplication.translate("MainWindow", u"RZ", None))
+        self.RY.setText(QCoreApplication.translate("MainWindow", u"YAW", None))
+        self.RZ.setText(QCoreApplication.translate("MainWindow", u"ROLL", None))
         self.labelX_2.setText(QCoreApplication.translate("MainWindow", u"-", None))
         self.labelY_2.setText(QCoreApplication.translate("MainWindow", u"-", None))
         self.labelZ_2.setText(QCoreApplication.translate("MainWindow", u"-", None))
+        self.RX.setText(QCoreApplication.translate("MainWindow", u"PITCH", None))
         self.toothTarget_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt; font-style:italic;\">JOINT CONTROL</span></p></body></html>", None))
         self.maxilla.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>MAXILLA (UPPER JAW)</p><p><br/></p></body></html>", None))
         self.mandibula.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>MANDIBULA (LOWER JAW)</p></body></html>", None))

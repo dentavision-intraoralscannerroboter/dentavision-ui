@@ -20,7 +20,6 @@ class ToothInfoController:
         self.badge.move(10, 55)
         self.badge.adjustSize()
         self.badge.hide()
-
         self.clear()
 
     def show_tooth(self, tooth: Tooth) -> None:
