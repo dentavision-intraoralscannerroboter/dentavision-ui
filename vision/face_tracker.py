@@ -1,5 +1,4 @@
 import mediapipe as mp
-from core.models import HeadPosition
 
 MOUTH_LANDMARK_IDS = sorted({idx for pair in mp.solutions.face_mesh.FACEMESH_LIPS for idx in pair})
 MOUTH_BOX_PADDING = 6
@@ -13,21 +12,6 @@ class FaceTracker:
         self.face_mesh = mp.solutions.face_mesh.FaceMesh(
             static_image_mode=False,
             max_num_faces=1
-        )
-
-    def detect(self, frame) -> HeadPosition:
-        results = self.face_mesh.process(frame)
-        if not results.multi_face_landmarks:
-            return HeadPosition(detected=False)
-
-        landmarks = results.multi_face_landmarks[0]
-        nose_tip = landmarks.landmark[1]
-
-        return HeadPosition(
-            detected=True,
-            x=nose_tip.x,
-            y=nose_tip.y,
-            z=nose_tip.z
         )
 
 

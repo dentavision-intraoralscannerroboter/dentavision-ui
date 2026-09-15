@@ -30,6 +30,9 @@ class ToothInfoController:
         self.badge.show()
 
     def clear(self) -> None:
+        self.badge.clear()
         self.badge.hide()
         for widget in self._empty_widgets:
             widget.show()
+
+

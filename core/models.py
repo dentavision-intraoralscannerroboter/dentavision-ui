@@ -24,6 +24,9 @@ class Tooth:
 
 @dataclass
 class Joint:
+    # Single robot joint (J1-J6) in joint-space.
+    # Not wired, not used. Maybe used in future implementations, when the system is fully connected.
+    # MotionController's Cartesian delta into per-joint angles.
     name: str
     angle: float
     min_angle: float = -180.0
@@ -41,6 +44,10 @@ class Joint:
 
 @dataclass
 class RobotArm:
+    # not wired, not used. Maybe used in future implementations. 
+    # Joint-space snapshot of the whole arm.
+    # Consumer: a future IK function (core/kinematics.py) that turns
+    # a Cartesian target pose into joint angles before sending to the robot.
     joints: list[Joint] = field(default_factory=lambda: [
         Joint(name=f"J{i}", angle=0.0) for i in range(1, 7)
     ])
@@ -50,20 +57,6 @@ class RobotArm:
             if j.name == name:
                 return j
         raise ValueError(f"Joint not found: {name}")
-
-
-@dataclass
-class DentalArch:
-    teeth: dict[int, Tooth] = field(default_factory=dict)
-
-    def get_tooth(self, number: int) -> Tooth:
-        if number not in self.teeth:
-            raise KeyError(f"Invalid tooth number: {number}")
-        return self.teeth[number]
-
-    def add_tooth(self, tooth: Tooth):
-        self.teeth[tooth.number] = tooth
-
 
 @dataclass
 class HeadPosition:
