@@ -116,11 +116,8 @@ class ControlPanel(QMainWindow):
             if not self.camera.check_ready("start"):
                 return
             tooth = self.tooth_chart.selected_tooth
-            x, y, z = self.tooth_target.show_target_for(tooth)
-            self.motion_control.set_baseline(
-                x, y, z,
-                self.head_position.rx, self.head_position.ry, self.head_position.rz,
-            )
+            x, y, z, rx, ry, rz = self.tooth_target.show_target_for(tooth)
+            self.motion_control.set_baseline(x, y, z, rx, ry, rz)
             print("Joints are moving...")
             self._target_reached = False
             self.ui.jointsAreMovingLabel.setText(ALIGNING_TEXT)
@@ -170,17 +167,11 @@ class ControlPanel(QMainWindow):
         print(f"Tooth {tooth.number} is selected")
         self.tooth_info.show_tooth(tooth)
         self.tooth_target.show_target_for(tooth)
-        self.tooth_target.show_orientation(
-            self.head_position.rx, self.head_position.ry, self.head_position.rz
-        )
 
     def _on_head_position_updated(self):
         tooth = self.tooth_chart.selected_tooth
         if tooth is not None and self.camera.stabilized:
             self.tooth_target.show_target_for(tooth)
-            self.tooth_target.show_orientation(
-                self.head_position.rx, self.head_position.ry, self.head_position.rz
-            )
 
     def on_tracking_lost(self):
         print("Tracking lost")

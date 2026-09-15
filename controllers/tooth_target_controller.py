@@ -6,16 +6,15 @@ class ToothTargetController:
 
     def __init__(self, ui, head_position: HeadPosition):
         self.ui = ui
-        
         self.head_position = head_position
 
-    def show_target_for(self, tooth: Tooth) -> tuple[float, float, float]:
-        x, y, z = compute_tooth_target(tooth.number, self.head_position)
+    def show_target_for(self, tooth: Tooth) -> tuple[float, float, float, float, float, float]:
+        x, y, z, rx, ry, rz = compute_tooth_target(tooth.number, self.head_position)
         self.ui.labelX.setText(f"{x:.1f} mm")
         self.ui.labelY.setText(f"{y:.1f} mm")
         self.ui.labelZ.setText(f"{z:.1f} mm")
-
-        return (x, y, z)
+        self.show_orientation(rx, ry, rz)
+        return (x, y, z, rx, ry, rz)
 
     def show_orientation(self, rx: float, ry: float, rz: float) -> None:
         self.ui.labelX_2.setText(f"{rx:.1f}°")
