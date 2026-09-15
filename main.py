@@ -8,6 +8,7 @@ from controllers.camera_controller import CameraController
 from controllers.tooth_target_controller import ToothTargetController
 from controllers.joint_motion_controller import MotionController
 from core.models import HeadPosition
+from core.tooth_target import get_demo_command
 
 START_BUTTON_STYLE = """
     QPushButton {
@@ -167,6 +168,7 @@ class ControlPanel(QMainWindow):
         print(f"Tooth {tooth.number} is selected")
         self.tooth_info.show_tooth(tooth)
         self.tooth_target.show_target_for(tooth)
+        print(get_demo_command(tooth.number, self.head_position))
 
     def _on_head_position_updated(self):
         tooth = self.tooth_chart.selected_tooth
