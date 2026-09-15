@@ -1,44 +1,22 @@
 import sys
-from PySide6.QtCore import Qt, QTimer
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QApplication, QMainWindow
 from ui.mainwindow_ui import Ui_MainWindow
-from controllers.tooth_chart_controller import ToothChartController
+from ui.buttons import style_start_button, set_start_text, set_scan_text, set_pause_text
+from ui.status_labels import (
+    set_aligning,
+    set_target_reached,
+    set_scanning_active,
+    set_scanning_successful,
+    set_paused,
+)
+from ui.stabilization_error_label import build_stabilization_error_label
+from controllers.dental_chart_controller import DentalChartController
 from controllers.tooth_badge_controller import ToothInfoController
 from controllers.camera_controller import CameraController
 from controllers.tooth_target_controller import ToothTargetController
 from controllers.joint_motion_controller import MotionController
 from core.models import HeadPosition
-from core.tooth_target import get_demo_command
-
-START_BUTTON_STYLE = """
-    QPushButton {
-        background-color: #0E7772;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 6px 20px;
-        font-weight: bold;
-    }
-    QPushButton:hover {
-        background-color: #129B93;
-    }
-    QPushButton:pressed {
-        background-color: #0B5F5B;
-    }
-    QPushButton:disabled {
-        background-color: #A9C9C7;
-        color: #F0F0F0;
-    }
-"""
-
-SCANNING_LABEL_STYLE = "color: #11AC00; font-weight: 600; font-size: 11px;"
-PAUSED_LABEL_STYLE = "color: #C83C3C; font-weight: 600; font-size: 11px;"
-
-ALIGNING_TEXT = "● JOINTS ARE MOVING"
-TARGET_REACHED_TEXT = "● TARGET REACHED"
-SCANNING_ACTIVE_TEXT = "● SCANNING..."
-SCANNING_SUCCESSFUL_TEXT = "● SCANNING SUCCESSFUL"
-PAUSED_TEXT = "● PAUSED"
 
 STATUS_LABEL_DELAY_MS = 2000
 
@@ -63,32 +41,16 @@ class ControlPanel(QMainWindow):
         self.scanning_successful_timer.timeout.connect(self._show_scanning_successful)
 
         self.ui.startButton.clicked.connect(self.on_start_clicked)
-        self.ui.startButton.setStyleSheet(START_BUTTON_STYLE)
+        style_start_button(self.ui.startButton)
         self._phase = "idle"
         self._target_reached = False
 
-        self.stabilization_error_label = QLabel("STABILIZATION ERROR", self.ui.centerPanel)
-        self.stabilization_error_label.setAlignment(Qt.AlignCenter)
-        self.stabilization_error_label.setStyleSheet("""
-            QLabel {
-                background-color: #C83C3C;
-                color: white;
-                font-weight: bold;
-                font-size: 13px;
-                border-radius: 8px;
-                padding: 6px 14px;
-            }
-        """)
-        self.stabilization_error_label.adjustSize()
-        self.stabilization_error_label.move(
-            (self.ui.centerPanel.width() - self.stabilization_error_label.width()) // 2, 10
-        )
-        self.stabilization_error_label.hide()
+        self.stabilization_error_label = build_stabilization_error_label(self.ui.centerPanel)
 
         self.head_position = HeadPosition()
         self.tooth_info = ToothInfoController(self.ui)
         self.tooth_target = ToothTargetController(self.ui, self.head_position)
-        self.tooth_chart = ToothChartController(
+        self.tooth_chart = DentalChartController(
             mouth_frame=self.ui.mouthFrame,
             on_tooth_selected=self.on_tooth_selected,
             can_select=self.can_select_tooth,
@@ -121,10 +83,10 @@ class ControlPanel(QMainWindow):
             self.motion_control.set_baseline(x, y, z, rx, ry, rz)
             print("Joints are moving...")
             self._target_reached = False
-            self.ui.jointsAreMovingLabel.setText(ALIGNING_TEXT)
+            set_aligning(self.ui.jointsAreMovingLabel)
             self.ui.jointsAreMovingLabel.show()
             self.target_reached_timer.start(STATUS_LABEL_DELAY_MS)
-            self.ui.startButton.setText("Scan")
+            set_scan_text(self.ui.startButton)
             self._phase = "aligning"
 
         elif self._phase == "aligning" and not self._target_reached:
@@ -134,11 +96,10 @@ class ControlPanel(QMainWindow):
             self.target_reached_timer.stop()
             self.ui.jointsAreMovingLabel.hide()
             self.ui.motionControl.setEnabled(False)
-            self.ui.scanningLabel.setText(SCANNING_ACTIVE_TEXT)
-            self.ui.scanningLabel.setStyleSheet(SCANNING_LABEL_STYLE)
+            set_scanning_active(self.ui.scanningLabel)
             self.camera.start_scanning()
             self.scanning_successful_timer.start(STATUS_LABEL_DELAY_MS)
-            self.ui.startButton.setText("Pause")
+            set_pause_text(self.ui.startButton)
             self._phase = "scanning"
 
         elif self._phase == "scanning":
@@ -149,17 +110,16 @@ class ControlPanel(QMainWindow):
         self.scanning_successful_timer.stop()
         self.camera.pause_scanning()
         self.ui.motionControl.setEnabled(True)
-        self.ui.scanningLabel.setText(PAUSED_TEXT)
-        self.ui.scanningLabel.setStyleSheet(PAUSED_LABEL_STYLE)
-        self.ui.startButton.setText("Scan")
+        set_paused(self.ui.scanningLabel)
+        set_scan_text(self.ui.startButton)
         self._phase = "paused"
 
     def _show_target_reached(self):
         self._target_reached = True
-        self.ui.jointsAreMovingLabel.setText(TARGET_REACHED_TEXT)
+        set_target_reached(self.ui.jointsAreMovingLabel)
 
     def _show_scanning_successful(self):
-        self.ui.scanningLabel.setText(SCANNING_SUCCESSFUL_TEXT)
+        set_scanning_successful(self.ui.scanningLabel)
 
     def can_select_tooth(self) -> bool:
         return self.camera.check_ready("select tooth")
@@ -168,7 +128,6 @@ class ControlPanel(QMainWindow):
         print(f"Tooth {tooth.number} is selected")
         self.tooth_info.show_tooth(tooth)
         self.tooth_target.show_target_for(tooth)
-        print(get_demo_command(tooth.number, self.head_position))
 
     def _on_head_position_updated(self):
         tooth = self.tooth_chart.selected_tooth
@@ -191,7 +150,7 @@ class ControlPanel(QMainWindow):
         self.tooth_target.clear()
         self.stabilization_error_label.show()
         self.ui.startButton.setEnabled(False)
-        self.ui.startButton.setText("Start")
+        set_start_text(self.ui.startButton)
         self.target_reached_timer.stop()
         self.ui.jointsAreMovingLabel.hide()
         self.ui.motionControl.setEnabled(True)

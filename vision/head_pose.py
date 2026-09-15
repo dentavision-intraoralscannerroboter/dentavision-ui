@@ -46,3 +46,14 @@ def estimate_head_orientation(
     rx = pitch_ratio * PITCH_SCALE_DEG
 
     return (rx, ry, rz)
+
+
+def check_stabilization(
+    mouth_mid_x: float,
+    mouth_mid_y: float,
+    target_x: float,
+    target_y: float,
+    tolerance_px: float,
+) -> str:
+    distance = math.hypot(mouth_mid_x - target_x, mouth_mid_y - target_y)
+    return "stabilized" if distance <= tolerance_px else "not_stabilized"
