@@ -1,5 +1,5 @@
 from core.models import HeadPosition, Tooth
-+from core.tooth_target import compute_tooth_target, get_demo_command
+from core.tooth_target import compute_tooth_target, get_demo_command
 
 
 class ToothTargetController:
