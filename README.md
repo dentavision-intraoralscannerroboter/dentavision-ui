@@ -1,22 +1,23 @@
-<table>
-<tr>
-<td width="55%" valign="top">
+<p align="left">
+  <img src="assets/demo_last.png" width="451" align="right">
 
-# DentaVision Control Panel
+  <h1>DentaVision Control Panel</h1>
 
-DentaVision Control Panel is a touchscreen control panel prototype for intraoral dental scanning with a robot arm. It tracks a patient's head position through a webcam, lets an operator select a tooth from an on-screen dental chart, and computes the target position and orientation a robotic arm would need to reach that tooth.
+  <p>
+    DentaVision Control Panel is a touchscreen control panel prototype
+    for intraoral dental scanning with a robot arm. It tracks a patient's
+    head position through a webcam, lets an operator select a tooth from
+    an on-screen dental chart, and computes the target position and
+    orientation a robotic arm would need to reach that tooth.
+  </p>
 
-Target coordinates can be sent, as a manual demonstration step, to a separate PyBullet based UR5e simulation for testing.
+  <p>
+    Target coordinates can be sent, as a manual demonstration step,
+    to a separate PyBullet based UR5e simulation for testing.
+  </p>
+</p>
 
-</td>
-<td width="45%" align="center" valign="middle">
-
-<img src="assets/demo_last.png" width="451">
-
-</td>
-</tr>
-</table>
-
+<br clear="right"/>
 
 ## Features
 
