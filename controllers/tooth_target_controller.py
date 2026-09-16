@@ -1,5 +1,5 @@
 from core.models import HeadPosition, Tooth
-from core.tooth_target import compute_tooth_target
++from core.tooth_target import compute_tooth_target, get_demo_command
 
 
 class ToothTargetController:
@@ -14,6 +14,7 @@ class ToothTargetController:
         self.ui.labelY.setText(f"{y:.4f} m")
         self.ui.labelZ.setText(f"{z:.4f} m")
         self.show_orientation(rx, ry, rz)
+        print(get_demo_command(tooth.number, self.head_position))
         return (x, y, z, rx, ry, rz)
 
     def show_orientation(self, rx: float, ry: float, rz: float) -> None:
