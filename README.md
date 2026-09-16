@@ -1,7 +1,6 @@
+# DentaVision Control Panel
+
 <img src="assets/demo_last.png" width="451" align="right">
-
-<h1 style="border-bottom: none;">DentaVision Control Panel</h1>
-
 <p>
   DentaVision Control Panel is a touchscreen control panel prototype
   for intraoral dental scanning with a robot arm. It tracks a patient's
